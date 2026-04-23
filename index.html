@@ -1,0 +1,1836 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Nodina — Cabinet de conseil en intelligence artificielle. Accompagnement stratégique des comités exécutifs du CAC 40 et des ETI." />
+  <meta name="theme-color" content="#FFFFFF" />
+  <title>Nodina — Conseil en intelligence artificielle</title>
+
+  <!-- Google Fonts : Cormorant Garamond Light 300 + Syne 400/500/600 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400&family=Syne:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ============================================================
+       SYSTÈME — Variables & reset
+       ============================================================ */
+    :root {
+      /* Palette — mode clair impératif */
+      --white: #FFFFFF;
+      --cream: #F8F8F6;        /* blanc cassé pour variations subtiles */
+      --navy: #0D111A;         /* bleu nuit principal (texte, structures) */
+      --navy-soft: #1A2340;    /* variante pour hiérarchie secondaire */
+      --gold: #B8924A;         /* or doux — accent unique */
+      --hairline: rgba(13, 17, 26, 0.09);   /* filets discrets */
+      --gold-veil: rgba(184, 146, 74, 0.55);
+
+      /* Typographie */
+      --font-display: "Cormorant Garamond", "Times New Roman", serif;
+      --font-body: "Syne", -apple-system, BlinkMacSystemFont, sans-serif;
+
+      /* Rythme vertical */
+      --section-y: clamp(90px, 14vw, 180px);
+      --container: 1080px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+
+    body {
+      background: var(--white);
+      color: var(--navy);
+      font-family: var(--font-body);
+      font-weight: 400;
+      font-size: 17px;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-rendering: optimizeLegibility;
+      overflow-x: hidden;
+    }
+
+    /* Focus visible — accessibilité clavier */
+    :focus { outline: none; }
+    :focus-visible {
+      outline: 2px solid var(--gold);
+      outline-offset: 4px;
+      border-radius: 2px;
+    }
+
+    ::selection { background: var(--gold); color: var(--white); }
+
+    /* ============================================================
+       CONTENEURS & LAYOUT
+       ============================================================ */
+    .wrap {
+      width: 100%;
+      max-width: var(--container);
+      margin-inline: auto;
+      padding-inline: clamp(24px, 6vw, 56px);
+    }
+
+    section {
+      padding-block: var(--section-y);
+      position: relative;
+    }
+
+    /* ============================================================
+       TYPOGRAPHIE — éléments communs
+       ============================================================ */
+
+    /* Label de section : Syne uppercase, très tracké, discret */
+    .eyebrow {
+      font-family: var(--font-body);
+      font-weight: 500;
+      font-size: 11px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--navy-soft);
+      display: inline-flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 48px;
+    }
+    .eyebrow::before {
+      content: "";
+      width: 28px;
+      height: 1px;
+      background: var(--gold);
+      display: inline-block;
+    }
+
+    /* Titre de section : Cormorant Light, large, tracké */
+    .title {
+      font-family: var(--font-display);
+      font-weight: 300;
+      font-size: clamp(2rem, 4.2vw, 3rem);
+      line-height: 1.15;
+      letter-spacing: 0.02em;
+      color: var(--navy);
+      max-width: 20ch;
+    }
+
+    .title em {
+      font-style: italic;
+      color: var(--gold);
+    }
+
+    /* Paragraphe premium */
+    .lede {
+      font-family: var(--font-display);
+      font-weight: 300;
+      font-size: clamp(1.25rem, 2.1vw, 1.5rem);
+      line-height: 1.55;
+      letter-spacing: 0.005em;
+      color: var(--navy);
+      max-width: 48ch;
+    }
+
+    p.body {
+      font-family: var(--font-body);
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 1.75;
+      color: var(--navy-soft);
+      max-width: 62ch;
+    }
+
+    /* ============================================================
+       HERO — « wow » cinématique
+       - Fond navy pleine largeur, seule section sombre du site.
+       - Portrait suggestif à gauche, sphère de nœuds à droite.
+       - Wordmark Nodina (logo officiel) superposé au centre.
+       ============================================================ */
+    .hero {
+      min-height: 100vh;
+      background: #07090F;
+      color: var(--white);
+      display: grid;
+      place-items: center;
+      position: relative;
+      overflow: hidden;
+      isolation: isolate;
+    }
+
+    /* Vignette diffuse : anneau de lumière subtil au centre */
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 50% 55%, rgba(184,146,74,0.10), transparent 55%),
+        radial-gradient(ellipse at 50% 50%, rgba(255,255,255,0.03), transparent 70%);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* Grain filmique discret */
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 6;
+      opacity: 0.06;
+      mix-blend-mode: overlay;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 1 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+    }
+
+    /* Portrait — désactivé dans cette version (sphère centrée) */
+    .hero__portrait { display: none; }
+
+    /* Sphère de nœuds — canvas centré derrière le logo */
+    .hero__sphere {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: min(820px, 78vw);
+      aspect-ratio: 1;
+      z-index: 2;
+      opacity: 0;
+      animation: sphereIn 1800ms cubic-bezier(0.2, 0.8, 0.2, 1) 300ms forwards;
+    }
+    .hero__sphere canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+    @keyframes sphereIn {
+      to { opacity: 1; }
+    }
+
+    /* Contenu central — superposé à tout, avec voile sombre pour lisibilité */
+    .hero__content {
+      position: relative;
+      z-index: 5;
+      text-align: center;
+      padding: clamp(24px, 4vw, 48px);
+    }
+    .hero__content::before {
+      content: "";
+      position: absolute;
+      inset: -30% -15%;
+      background:
+        radial-gradient(ellipse 35% 30% at 50% 48%, rgba(184,146,74,0.18) 0%, transparent 65%),
+        radial-gradient(ellipse 60% 55% at 50% 50%, rgba(7,9,15,0.78) 0%, rgba(7,9,15,0.55) 40%, transparent 75%);
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    /* --------------------------------------------------------------
+       Wordmark — logo officiel Nodina (SVG en blanc sur fond sombre)
+       Révélation : le logo se masque de gauche à droite après que
+       la sphère se soit assemblée ; un liseré or glisse en même temps.
+       -------------------------------------------------------------- */
+    .wordmark {
+      position: relative;
+      display: inline-block;
+      margin-bottom: clamp(36px, 5vw, 52px);
+    }
+    .wordmark__logo {
+      width: clamp(240px, 36vw, 460px);
+      height: auto;
+      display: block;
+      color: #fff;                /* pilote le fill via currentColor */
+      opacity: 0;
+      -webkit-mask-image: linear-gradient(90deg, #000 0%, #000 0%, transparent 0%);
+              mask-image: linear-gradient(90deg, #000 0%, #000 0%, transparent 0%);
+      animation: logoReveal 1800ms cubic-bezier(0.2, 0.8, 0.2, 1) 1400ms forwards;
+    }
+    @keyframes logoReveal {
+      0%   { opacity: 0;
+             -webkit-mask-image: linear-gradient(90deg, #000 0%, #000 0%,   transparent 0%);
+                     mask-image: linear-gradient(90deg, #000 0%, #000 0%,   transparent 0%); }
+      20%  { opacity: 1; }
+      100% { opacity: 1;
+             -webkit-mask-image: linear-gradient(90deg, #000 0%, #000 100%, transparent 100%);
+                     mask-image: linear-gradient(90deg, #000 0%, #000 100%, transparent 100%); }
+    }
+    /* Trait or qui accompagne le balayage */
+    .wordmark__sweep {
+      position: absolute;
+      top: 6%;
+      bottom: 6%;
+      width: 2px;
+      left: 0;
+      background: linear-gradient(to bottom, transparent, var(--gold), transparent);
+      box-shadow: 0 0 18px rgba(184,146,74,0.9);
+      opacity: 0;
+      animation: sweepMove 1800ms cubic-bezier(0.2, 0.8, 0.2, 1) 1400ms forwards;
+    }
+    @keyframes sweepMove {
+      0%   { opacity: 0; left: 0; }
+      15%  { opacity: 1; }
+      85%  { opacity: 1; }
+      100% { opacity: 0; left: 100%; }
+    }
+
+    /* Baseline sous le wordmark */
+    .hero__baseline {
+      font-family: var(--font-display);
+      font-weight: 300;
+      font-size: clamp(1.15rem, 2vw, 1.45rem);
+      line-height: 1.5;
+      color: rgba(255,255,255,0.88);
+      letter-spacing: 0.02em;
+      max-width: 34ch;
+      margin-inline: auto;
+      opacity: 0;
+      animation: fadeIn 900ms ease-out 2800ms forwards;
+    }
+
+    .hero__sub {
+      display: block;
+      margin-top: 22px;
+      font-family: var(--font-body);
+      font-weight: 500;
+      font-size: 11px;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.6);
+      opacity: 0;
+      animation: fadeIn 900ms ease-out 3000ms forwards;
+    }
+
+    .hero__sub .dot {
+      display: inline-block;
+      width: 3px;
+      height: 3px;
+      background: var(--gold);
+      border-radius: 50%;
+      vertical-align: middle;
+      margin: 0 12px 3px;
+    }
+
+    @keyframes fadeIn {
+      to { opacity: 1; }
+    }
+
+    /* Indicateur de scroll discret */
+    .hero__scroll {
+      position: absolute;
+      bottom: 36px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 1px;
+      height: 44px;
+      background: linear-gradient(to bottom, transparent, var(--gold));
+      opacity: 0;
+      animation: fadeIn 1200ms ease-out 3400ms forwards;
+      z-index: 5;
+    }
+
+    @media (max-width: 720px) {
+      .hero__sphere { width: 110vw; opacity: 0.75 !important; }
+    }
+
+    /* ============================================================
+       CURSOR — point + anneau, inspiré de la v2
+       Masqué sur tactile. Désactivé quand prefers-reduced-motion.
+       ============================================================ */
+    @media (hover: hover) and (pointer: fine) {
+      body { cursor: none; }
+      a, button, input, select, textarea, [role="button"] { cursor: none; }
+    }
+    .cursor-dot, .cursor-ring {
+      position: fixed;
+      top: 0; left: 0;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate3d(-100px, -100px, 0);
+      will-change: transform;
+    }
+    .cursor-dot {
+      width: 6px; height: 6px;
+      margin: -3px 0 0 -3px;
+      background: var(--gold);
+      border-radius: 50%;
+      box-shadow: 0 0 0 2px rgba(255,255,255,0.25), 0 0 12px rgba(184,146,74,0.9);
+      transition: width 260ms ease, height 260ms ease, margin 260ms ease, background 260ms ease;
+    }
+    .cursor-ring {
+      width: 34px; height: 34px;
+      margin: -17px 0 0 -17px;
+      border: 1px solid rgba(13,17,26,0.55);
+      border-radius: 50%;
+      background: rgba(255,255,255,0.04);
+      transition: width 260ms ease, height 260ms ease, margin 260ms ease, border-color 260ms ease, transform 120ms ease;
+    }
+    /* Sur fond sombre (hero / contact), le curseur se claircit */
+    body.cursor-on-dark .cursor-ring {
+      border-color: rgba(255,255,255,0.6);
+    }
+    /* États au survol de liens / boutons */
+    body.cursor-hover .cursor-dot {
+      width: 0; height: 0;
+      margin: 0;
+    }
+    body.cursor-hover .cursor-ring {
+      width: 54px; height: 54px;
+      margin: -27px 0 0 -27px;
+      border-color: rgba(184,146,74,0.9);
+    }
+    body.cursor-hide .cursor-dot,
+    body.cursor-hide .cursor-ring { opacity: 0; }
+    @media (hover: none), (prefers-reduced-motion: reduce) {
+      .cursor-dot, .cursor-ring { display: none; }
+      body { cursor: auto; }
+    }
+
+    /* ============================================================
+       NAV — sticky, minimale
+       ============================================================ */
+    .nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 90;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 22px clamp(24px, 5vw, 56px);
+      transition: background 500ms ease, padding 400ms ease, backdrop-filter 400ms ease, border-color 500ms ease;
+      border-bottom: 1px solid transparent;
+    }
+    .nav.is-scrolled {
+      background: rgba(255,255,255,0.86);
+      -webkit-backdrop-filter: blur(14px);
+              backdrop-filter: blur(14px);
+      border-bottom-color: var(--hairline);
+      padding-block: 14px;
+    }
+    .nav.is-dark { /* utilisé quand on est dans le hero */
+      color: #fff;
+    }
+    .nav__logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: inherit;
+      text-decoration: none;
+    }
+    /* Nav logo : SVG piloté par currentColor selon l'état de la nav */
+    .nav__logo svg {
+      height: 22px;
+      width: auto;
+      display: block;
+      transition: opacity 300ms ease;
+    }
+    .nav__logo .logo-light { color: #fff; }
+    .nav__logo .logo-dark  { color: var(--navy); }
+    .nav__logo .logo-dark  { display: none; }
+    .nav__logo .logo-light { display: block; }
+    .nav.is-scrolled .logo-dark  { display: block; }
+    .nav.is-scrolled .logo-light { display: none; }
+
+    .nav__links {
+      display: flex;
+      gap: clamp(20px, 3vw, 40px);
+      list-style: none;
+      align-items: center;
+    }
+    .nav__links a {
+      text-decoration: none;
+      color: rgba(255,255,255,0.78);
+      font-family: var(--font-body);
+      font-weight: 500;
+      font-size: 11px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      transition: color 200ms ease;
+      position: relative;
+      padding-block: 4px;
+    }
+    .nav__links a::after {
+      content: "";
+      position: absolute;
+      left: 0; right: 100%;
+      bottom: 0;
+      height: 1px;
+      background: var(--gold);
+      transition: right 300ms ease;
+    }
+    .nav__links a:hover { color: #fff; }
+    .nav__links a:hover::after { right: 0; }
+    .nav.is-scrolled .nav__links a { color: var(--navy-soft); }
+    .nav.is-scrolled .nav__links a:hover { color: var(--navy); }
+    .nav__cta {
+      padding: 9px 18px !important;
+      border: 1px solid rgba(255,255,255,0.28);
+      color: #fff !important;
+      transition: background 300ms ease, color 300ms ease, border-color 300ms ease !important;
+    }
+    .nav__cta::after { display: none !important; }
+    .nav__cta:hover {
+      background: var(--gold);
+      border-color: var(--gold);
+      color: #fff !important;
+    }
+    .nav.is-scrolled .nav__cta {
+      border-color: var(--navy);
+      color: var(--navy) !important;
+    }
+    .nav.is-scrolled .nav__cta:hover {
+      background: var(--navy);
+      color: #fff !important;
+    }
+    @media (max-width: 720px) {
+      .nav__links li:not(:last-child) { display: none; }
+    }
+
+    /* ============================================================
+       MARQUEE — bande horizontale défilante après le hero
+       ============================================================ */
+    .marquee {
+      background: var(--cream);
+      border-top: 1px solid var(--hairline);
+      border-bottom: 1px solid var(--hairline);
+      padding-block: 22px;
+      overflow: hidden;
+    }
+    .marquee__track {
+      display: flex;
+      width: max-content;
+      animation: marquee 36s linear infinite;
+      white-space: nowrap;
+    }
+    .marquee__item {
+      display: inline-flex;
+      align-items: center;
+      gap: 40px;
+      padding: 0 40px;
+      font-family: var(--font-body);
+      font-weight: 500;
+      font-size: 10.5px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--navy-soft);
+    }
+    .marquee__item::after {
+      content: "";
+      display: inline-block;
+      width: 4px; height: 4px;
+      background: var(--gold);
+      border-radius: 50%;
+    }
+    @keyframes marquee {
+      from { transform: translate3d(0, 0, 0); }
+      to   { transform: translate3d(-50%, 0, 0); }
+    }
+
+    /* ============================================================
+       MANIFESTE
+       ============================================================ */
+    .manifeste .wrap {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 48px;
+    }
+
+    .manifeste__text {
+      font-family: var(--font-display);
+      font-weight: 300;
+      font-size: clamp(1.35rem, 2.4vw, 1.75rem);
+      line-height: 1.55;
+      letter-spacing: 0.005em;
+      color: var(--navy);
+      max-width: 52ch;
+    }
+
+    /* ============================================================
+       GRILLE GÉNÉRIQUE : header de section + contenu
+       ============================================================ */
+    .section-grid {
+      display: grid;
+      grid-template-columns: minmax(200px, 1fr) minmax(0, 2.2fr);
+      gap: clamp(40px, 6vw, 96px);
+      align-items: start;
+    }
+
+    .section-grid__header {
+      position: sticky;
+      top: 48px;
+    }
+
+    @media (max-width: 860px) {
+      .section-grid {
+        grid-template-columns: 1fr;
+        gap: 32px;
+      }
+      .section-grid__header { position: static; }
+    }
+
+    /* ============================================================
+       ACTIVITÉS — liste éditoriale
+       ============================================================ */
+    .activities {
+      list-style: none;
+      border-top: 1px solid var(--hairline);
+    }
+
+    .activity {
+      display: grid;
+      grid-template-columns: 56px 1fr 1.3fr;
+      gap: clamp(20px, 3vw, 56px);
+      padding-block: clamp(28px, 4vw, 44px);
+      border-bottom: 1px solid var(--hairline);
+      align-items: start;
+    }
+
+    .activity__num {
+      font-family: var(--font-body);
+      font-weight: 500;
+      font-size: 12px;
+      letter-spacing: 0.2em;
+      /* navy-soft retenu plutôt qu'or : le ratio de l'or sur blanc
+         (~3.1:1) n'atteint pas l'AAA sur petit texte. La signature or
+         demeure assurée par le wordmark, les filets, la constellation
+         et les points de séparation. */
+      color: var(--navy-soft);
+      padding-top: 6px;
+      position: relative;
+    }
+    .activity__num::after {
+      /* Filet or capillaire en dessous du numéro — la couleur or
+         persiste comme accent décoratif sans compromettre le contraste
+         textuel. */
+      content: "";
+      display: block;
+      width: 18px;
+      height: 1px;
+      background: var(--gold);
+      margin-top: 10px;
+    }
+
+    .activity__title {
+      font-family: var(--font-display);
+      font-weight: 300;
+      font-size: clamp(1.15rem, 1.8vw, 1.4rem);
+      line-height: 1.3;
+      color: var(--navy);
+      letter-spacing: 0.01em;
+    }
+
+    .activity__desc {
+      font-family: var(--font-body);
+      font-weight: 400;
+      font-size: 15.5px;
+      line-height: 1.7;
+      color: var(--navy-soft);
+    }
+
+    @media (max-width: 720px) {
+      .activity {
+        grid-template-columns: 40px 1fr;
+        row-gap: 8px;
+      }
+      .activity__desc {
+        grid-column: 1 / -1;
+        padding-left: 0;
+        margin-top: 4px;
+      }
+    }
+
+    /* ============================================================
+       APPROCHE — principes numérotés (chiffres romains)
+       ============================================================ */
+    .principles {
+      list-style: none;
+      display: grid;
+      gap: clamp(32px, 4vw, 48px);
+    }
+
+    .principle {
+      display: grid;
+      grid-template-columns: 48px 1fr;
+      gap: clamp(16px, 2.5vw, 32px);
+      align-items: baseline;
+    }
+
+    .principle__num {
+      font-family: var(--font-display);
+      font-weight: 400;
+      font-style: italic;
+      font-size: 22px;
+      /* navy-soft pour atteindre AAA même sur format italique modeste.
+         L'accent or reste présent via le filet en dessous. */
+      color: var(--navy-soft);
+      letter-spacing: 0.05em;
+      position: relative;
+    }
+    .principle__num::after {
+      content: "";
+      display: block;
+      width: 14px;
+      height: 1px;
+      background: var(--gold);
+      margin-top: 6px;
+    }
+
+    .principle__body h3 {
+      font-family: var(--font-display);
+      font-weight: 300;
+      font-size: clamp(1.2rem, 2vw, 1.5rem);
+      line-height: 1.3;
+      color: var(--navy);
+      letter-spacing: 0.01em;
+      margin-bottom: 10px;
+    }
+
+    .principle__body p {
+      font-family: var(--font-body);
+      font-weight: 400;
+      font-size: 15.5px;
+      line-height: 1.7;
+      color: var(--navy-soft);
+      max-width: 56ch;
+    }
+
+    /* ============================================================
+       MANIFESTE — nouvelle version éditoriale
+       Grille 12 : stat en gauche, citation à droite, 4 lignes d'ancrage en bas.
+       ============================================================ */
+    .manifeste {
+      padding-block: clamp(110px, 15vw, 200px);
+    }
+    .manifeste__grid {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: clamp(48px, 7vw, 120px);
+      align-items: start;
+    }
+    @media (max-width: 860px) {
+      .manifeste__grid { grid-template-columns: 1fr; }
+    }
+    .bigstat {
+      font-family: var(--font-display);
+      font-weight: 300;
+      font-size: clamp(3rem, 7vw, 5.5rem);
+      line-height: 1;
+      letter-spacing: -0.02em;
+      color: var(--navy);
+      display: block;
+    }
+    .bigstat em { font-style: italic; color: var(--gold); }
+    .bigstat__label {
+      display: block;
+      margin-top: 22px;
+      font-family: var(--font-body);
+      font-weight: 500;
+      font-size: 11px;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--navy-soft);
+      max-width: 32ch;
+    }
+    .manifeste__lede {
+      font-family: var(--font-display);
+      font-weight: 300;
+      font-size: clamp(1.4rem, 2.6vw, 1.9rem);
+      line-height: 1.5;
+      letter-spacing: 0.005em;
+      color: var(--navy);
+      max-width: 40ch;
+      padding-left: 28px;
+      border-left: 1px solid var(--gold);
+    }
+    .manifeste__lede em { font-style: italic; color: var(--navy-soft); }
+    .manifeste__anchors {
+      margin-top: clamp(72px, 10vw, 120px);
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+      border-top: 1px solid var(--hairline);
+      border-bottom: 1px solid var(--hairline);
+    }
+    @media (max-width: 720px) {
+      .manifeste__anchors { grid-template-columns: 1fr 1fr; }
+    }
+    .anchor {
+      padding: 32px 28px;
+      border-right: 1px solid var(--hairline);
+    }
+    .anchor:last-child { border-right: none; }
+    @media (max-width: 720px) {
+      .anchor:nth-child(2) { border-right: none; }
+      .anchor:nth-child(1), .anchor:nth-child(2) { border-bottom: 1px solid var(--hairline); }
+    }
+    .anchor__num {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-weight: 400;
+      font-size: 13px;
+      color: var(--gold);
+      letter-spacing: 0.04em;
+    }
+    .anchor__text {
+      margin-top: 14px;
+      font-family: var(--font-display);
+      font-weight: 300;
+      font-size: clamp(1rem, 1.4vw, 1.15rem);
+      line-height: 1.35;
+      color: var(--navy);
+      letter-spacing: 0.01em;
+    }
+
+    /* ============================================================
+       ACTIVITÉS — mise à niveau : numéro, trait or qui s'allonge,
+       hover pad léger
+       ============================================================ */
+    .activity {
+      transition: padding-left 400ms cubic-bezier(0.2,0.8,0.2,1);
+    }
+    .activity:hover { padding-left: 10px; }
+    .activity__title { position: relative; }
+
+    /* ============================================================
+       SERVICES — grille 2x2, cartes avec filet hover
+       ============================================================ */
+    .services-section { background: var(--cream); }
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0;
+      border: 1px solid var(--hairline);
+      background: var(--hairline);
+    }
+    .services-grid > * {
+      background: var(--cream);
+      padding: clamp(36px, 4vw, 56px);
+      position: relative;
+      overflow: hidden;
+      transition: background 400ms ease;
+    }
+    .services-grid > *::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0;
+      height: 1px; width: 0;
+      background: var(--gold);
+      transition: width 600ms cubic-bezier(0.2,0.8,0.2,1);
+    }
+    .services-grid > *:hover { background: #FFFFFF; }
+    .services-grid > *:hover::before { width: 100%; }
+    @media (max-width: 720px) { .services-grid { grid-template-columns: 1fr; } }
+    .service__num {
+      font-family: var(--font-body);
+      font-weight: 500;
+      font-size: 11px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 24px;
+      display: block;
+    }
+    .service__title {
+      font-family: var(--font-display);
+      font-weight: 300;
+      font-size: clamp(1.35rem, 2.2vw, 1.7rem);
+      line-height: 1.2;
+      color: var(--navy);
+      margin-bottom: 12px;
+      letter-spacing: 0.01em;
+    }
+    .service__title em { font-style: italic; color: var(--gold); }
+    .service__desc {
+      font-family: var(--font-body);
+      font-size: 14.5px;
+      line-height: 1.75;
+      color: var(--navy-soft);
+      margin-bottom: 24px;
+    }
+    .service__tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .service__tag {
+      font-family: var(--font-body);
+      font-weight: 500;
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      padding: 5px 11px;
+      border: 1px solid var(--hairline);
+      color: var(--navy-soft);
+    }
+
+    /* ============================================================
+       CHIFFRES / SIGNATURE — bande horizontale avec 3 stats
+       ============================================================ */
+    .stats {
+      border-top: 1px solid var(--hairline);
+      border-bottom: 1px solid var(--hairline);
+      padding-block: clamp(60px, 7vw, 90px);
+    }
+    .stats__grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+    }
+    @media (max-width: 720px) { .stats__grid { grid-template-columns: 1fr; } }
+    .stat {
+      padding: 12px clamp(16px, 3vw, 40px);
+      border-right: 1px solid var(--hairline);
+    }
+    .stat:last-child { border-right: none; }
+    @media (max-width: 720px) {
+      .stat { border-right: none; border-bottom: 1px solid var(--hairline); padding-block: 24px; }
+      .stat:last-child { border-bottom: none; }
+    }
+    .stat__value {
+      font-family: var(--font-display);
+      font-weight: 300;
+      font-size: clamp(2.4rem, 4.5vw, 3.6rem);
+      line-height: 1;
+      color: var(--navy);
+      letter-spacing: -0.01em;
+    }
+    .stat__value em { font-style: italic; color: var(--gold); }
+    .stat__label {
+      margin-top: 16px;
+      font-family: var(--font-body);
+      font-weight: 500;
+      font-size: 11px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--navy-soft);
+    }
+    .stat__desc {
+      margin-top: 10px;
+      font-family: var(--font-body);
+      font-size: 13px;
+      line-height: 1.65;
+      color: var(--navy-soft);
+      max-width: 36ch;
+    }
+
+    /* ============================================================
+       CONTACT — bloc CTA en cream, e-mail proéminent
+       ============================================================ */
+    .contact {
+      background: var(--navy);
+      color: #fff;
+      padding-block: clamp(110px, 14vw, 180px);
+      position: relative;
+      overflow: hidden;
+    }
+    .contact::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 50% 0%, rgba(184,146,74,0.12), transparent 60%);
+      pointer-events: none;
+    }
+    .contact .eyebrow { color: rgba(255,255,255,0.55); }
+    .contact .eyebrow::before { background: var(--gold); }
+    .contact__title {
+      font-family: var(--font-display);
+      font-weight: 300;
+      font-size: clamp(2.2rem, 5.5vw, 4.2rem);
+      line-height: 1.1;
+      letter-spacing: -0.01em;
+      color: #fff;
+      max-width: 16ch;
+      margin-bottom: 48px;
+    }
+    .contact__title em { font-style: italic; color: var(--gold); }
+    .contact__email {
+      display: inline-flex;
+      align-items: center;
+      gap: 14px;
+      font-family: var(--font-display);
+      font-weight: 300;
+      font-size: clamp(1.3rem, 2.4vw, 1.8rem);
+      letter-spacing: 0.01em;
+      color: #fff;
+      text-decoration: none;
+      border-bottom: 1px solid rgba(255,255,255,0.25);
+      padding-block: 6px;
+      transition: border-color 300ms ease, color 300ms ease;
+    }
+    .contact__email:hover {
+      color: var(--gold);
+      border-color: var(--gold);
+    }
+    .contact__email .arrow {
+      display: inline-block;
+      transition: transform 300ms ease;
+    }
+    .contact__email:hover .arrow {
+      transform: translateX(6px);
+    }
+    .contact__details {
+      margin-top: 56px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+      border-top: 1px solid rgba(255,255,255,0.12);
+    }
+    @media (max-width: 720px) {
+      .contact__details { grid-template-columns: 1fr; }
+    }
+    .contact__detail {
+      padding: 28px 24px 28px 0;
+      border-right: 1px solid rgba(255,255,255,0.12);
+    }
+    .contact__detail:last-child { border-right: none; padding-right: 0; }
+    @media (max-width: 720px) {
+      .contact__detail { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.12); padding: 24px 0; }
+      .contact__detail:last-child { border-bottom: none; }
+    }
+    .contact__detail-label {
+      font-family: var(--font-body);
+      font-weight: 500;
+      font-size: 10px;
+      letter-spacing: 0.26em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.5);
+      margin-bottom: 12px;
+    }
+    .contact__detail-value {
+      font-family: var(--font-display);
+      font-weight: 300;
+      font-size: clamp(1.05rem, 1.6vw, 1.25rem);
+      line-height: 1.3;
+      color: #fff;
+      letter-spacing: 0.01em;
+    }
+    .contact__detail-value a {
+      color: inherit;
+      text-decoration: none;
+      border-bottom: 1px solid rgba(255,255,255,0.2);
+      transition: border-color 300ms ease;
+    }
+    .contact__detail-value a:hover { border-color: var(--gold); }
+
+    /* ============================================================
+       EXPERTISE — bloc resserré
+       ============================================================ */
+    .expertise .lede {
+      max-width: 46ch;
+    }
+
+    /* ============================================================
+       CLÔTURE — très épuré, reprise de la constellation
+       ============================================================ */
+    .closing {
+      background: var(--cream);
+      text-align: center;
+      padding-block: clamp(100px, 14vw, 180px);
+    }
+
+    .closing__logomark {
+      width: 56px;
+      height: auto;
+      margin: 0 auto 40px;
+      display: block;
+      color: var(--navy);          /* pilote le fill via currentColor */
+    }
+
+    .closing__signature {
+      font-family: var(--font-display);
+      font-weight: 300;
+      font-style: italic;
+      font-size: clamp(1.5rem, 3vw, 2.25rem);
+      line-height: 1.3;
+      letter-spacing: 0.02em;
+      color: var(--navy);
+      max-width: 24ch;
+      margin-inline: auto;
+    }
+
+    /* ============================================================
+       FOOTER — mentions légales minimales
+       ============================================================ */
+    footer {
+      border-top: 1px solid var(--hairline);
+      padding-block: 36px;
+    }
+
+    footer .wrap {
+      font-family: var(--font-body);
+      font-weight: 400;
+      font-size: 11px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--navy-soft);
+      text-align: center;
+    }
+
+    footer .sep {
+      display: inline-block;
+      width: 3px;
+      height: 3px;
+      background: var(--gold);
+      border-radius: 50%;
+      vertical-align: middle;
+      margin: 0 12px 2px;
+    }
+
+    /* ============================================================
+       ANIMATIONS AU SCROLL
+       ============================================================ */
+    .reveal {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 800ms cubic-bezier(0.2, 0.8, 0.2, 1),
+                  transform 800ms cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+    .reveal.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Stagger utilitaire pour les enfants d'une section révélée */
+    .reveal .stagger > * {
+      opacity: 0;
+      transform: translateY(14px);
+      transition: opacity 700ms cubic-bezier(0.2, 0.8, 0.2, 1),
+                  transform 700ms cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+    .reveal.is-visible .stagger > * {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .reveal.is-visible .stagger > *:nth-child(1) { transition-delay: 0ms; }
+    .reveal.is-visible .stagger > *:nth-child(2) { transition-delay: 80ms; }
+    .reveal.is-visible .stagger > *:nth-child(3) { transition-delay: 160ms; }
+    .reveal.is-visible .stagger > *:nth-child(4) { transition-delay: 240ms; }
+    .reveal.is-visible .stagger > *:nth-child(5) { transition-delay: 320ms; }
+    .reveal.is-visible .stagger > *:nth-child(6) { transition-delay: 400ms; }
+
+    /* ============================================================
+       ACCESSIBILITÉ — respect prefers-reduced-motion
+       ============================================================ */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.001ms !important;
+        animation-delay: 0ms !important;
+        transition-duration: 0.001ms !important;
+      }
+      .wordmark__letter,
+      .hero__constellation,
+      .hero__baseline,
+      .hero__sub,
+      .hero__scroll {
+        opacity: 1 !important;
+        transform: none !important;
+      }
+      .reveal { opacity: 1; transform: none; }
+      html { scroll-behavior: auto; }
+    }
+
+    /* ============================================================
+       RESPONSIVE — ajustements fins
+       ============================================================ */
+    @media (max-width: 560px) {
+      .hero__sub .dot { margin: 0 8px 2px; }
+      footer .sep { margin: 0 8px 2px; }
+      .wordmark { letter-spacing: 0.22em; padding-inline-start: 0.22em; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ============================================================
+       SYMBOLES SVG — logo officiel Nodina, inliné une seule fois.
+       Réutilisé via <svg><use href="#id"/></svg> partout dans la page.
+       La couleur est pilotée via currentColor / CSS.
+       ============================================================ -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <defs>
+      <!-- Logo complet Nodina (logomark + lettrage "odina") -->
+      <symbol id="nodina-logo" viewBox="0 0 238 52">
+        <path d="M32.164 7.30575C33.0624 4.05968 38.2871 -4.09837 47.6133 2.5128C56.4616 10.6553 48.7853 18.0265 45.5704 19.0941C42.3557 20.1617 38.8864 19.658 36.3248 20.8276C33.7631 21.9972 33.8421 22.1173 32.8072 22.8157C28.8659 25.4753 27.4816 28.8052 26.5086 32.3147C25.3676 36.43 26.193 38.1578 25.0324 42.3515C23.8719 46.5452 17.2128 56.9156 5.30223 48.4724C-5.99814 38.0735 3.62821 28.8696 7.91117 27.2964C12.1941 25.7233 15.3852 26.8797 19.7189 25.0825C23.185 23.645 28.0332 19.8773 29.1113 18.696C30.1895 17.5147 30.567 16.1603 31.0083 15.1646C31.4497 14.169 31.2657 10.5518 32.164 7.30575Z" fill="currentColor"/>
+        <path d="M50.3522 35.9721C50.3522 40.5298 46.6575 44.2245 42.0998 44.2245C37.5421 44.2245 33.8474 40.5298 33.8474 35.9721C33.8474 31.4144 37.5421 27.7197 42.0998 27.7197C46.6575 27.7197 50.3522 31.4144 50.3522 35.9721Z" fill="currentColor"/>
+        <path d="M23.0216 10.77C23.0216 15.3276 19.3269 19.0223 14.7692 19.0223C10.2116 19.0223 6.51685 15.3276 6.51685 10.77C6.51685 6.2123 10.2116 2.51758 14.7692 2.51758C19.3269 2.51758 23.0216 6.2123 23.0216 10.77Z" fill="currentColor"/>
+        <path d="M223.174 48.1773C221.317 48.1773 219.639 47.834 218.138 47.1473C216.638 46.448 215.449 45.437 214.571 44.1146C213.707 42.7921 213.274 41.1708 213.274 39.2507C213.274 37.5976 213.592 36.237 214.228 35.1688C214.864 34.1007 215.722 33.2551 216.803 32.632C217.884 32.0089 219.092 31.5384 220.427 31.2205C221.762 30.9026 223.123 30.661 224.509 30.4957C226.264 30.2922 227.688 30.1269 228.781 29.9998C229.875 29.8599 230.67 29.6374 231.166 29.3322C231.662 29.027 231.91 28.5311 231.91 27.8444V27.7109C231.91 26.0451 231.439 24.7544 230.498 23.8389C229.57 22.9233 228.184 22.4655 226.34 22.4655C224.42 22.4655 222.907 22.8915 221.8 23.7435C220.707 24.5827 219.95 25.5174 219.53 26.5474L214.171 25.3266C214.806 23.5464 215.735 22.1095 216.955 21.0159C218.189 19.9096 219.607 19.1085 221.209 18.6126C222.811 18.1039 224.496 17.8496 226.264 17.8496C227.433 17.8496 228.673 17.9895 229.983 18.2692C231.306 18.5363 232.539 19.0322 233.683 19.757C234.841 20.4818 235.788 21.5182 236.525 22.8661C237.263 24.2013 237.632 25.937 237.632 28.0733V47.5288H232.062V43.5233H231.833C231.464 44.2608 230.911 44.9856 230.174 45.6977C229.436 46.4098 228.489 47.0011 227.332 47.4716C226.175 47.9421 224.789 48.1773 223.174 48.1773ZM224.413 43.5996C225.99 43.5996 227.338 43.288 228.457 42.6649C229.589 42.0419 230.447 41.228 231.032 40.2235C231.63 39.2062 231.929 38.119 231.929 36.9618V33.1851C231.725 33.3886 231.331 33.5793 230.746 33.7574C230.174 33.9227 229.519 34.0689 228.781 34.1961C228.044 34.3105 227.325 34.4186 226.626 34.5203C225.927 34.6093 225.342 34.6856 224.871 34.7492C223.765 34.8891 222.754 35.1243 221.838 35.4549C220.936 35.7856 220.211 36.2624 219.664 36.8855C219.13 37.4959 218.863 38.3097 218.863 39.327C218.863 40.7385 219.384 41.8066 220.427 42.5314C221.47 43.2435 222.798 43.5996 224.413 43.5996Z" fill="currentColor"/>
+        <path d="M188.249 30.1333V47.5288H182.546V18.2311H188.02V22.9996H188.383C189.057 21.4482 190.112 20.2021 191.549 19.2611C192.998 18.3201 194.823 17.8496 197.023 17.8496C199.02 17.8496 200.768 18.2692 202.268 19.1085C203.769 19.935 204.932 21.1685 205.759 22.8089C206.586 24.4492 206.999 26.4774 206.999 28.8935V47.5288H201.296V29.5801C201.296 27.4566 200.743 25.7971 199.636 24.6018C198.53 23.3938 197.01 22.7898 195.078 22.7898C193.755 22.7898 192.579 23.0759 191.549 23.6481C190.532 24.2203 189.724 25.0596 189.126 26.1659C188.542 27.2595 188.249 28.5819 188.249 30.1333Z" fill="currentColor"/>
+        <path d="M169.17 47.531V18.2333H174.874V47.531H169.17ZM172.051 13.7128C171.059 13.7128 170.207 13.3821 169.495 12.7209C168.795 12.047 168.446 11.2458 168.446 10.3176C168.446 9.37659 168.795 8.57548 169.495 7.91424C170.207 7.24029 171.059 6.90332 172.051 6.90332C173.042 6.90332 173.888 7.24029 174.587 7.91424C175.299 8.57548 175.656 9.37659 175.656 10.3176C175.656 11.2458 175.299 12.047 174.587 12.7209C173.888 13.3821 173.042 13.7128 172.051 13.7128Z" fill="currentColor"/>
+        <path d="M146.515 48.1017C144.15 48.1017 142.039 47.4977 140.182 46.2896C138.339 45.0689 136.889 43.3332 135.834 41.0824C134.791 38.819 134.27 36.1041 134.27 32.9378C134.27 29.7715 134.797 27.063 135.853 24.8123C136.921 22.5615 138.383 20.8385 140.24 19.6432C142.096 18.4479 144.201 17.8503 146.553 17.8503C148.372 17.8503 149.834 18.1554 150.94 18.7658C152.059 19.3635 152.924 20.0628 153.534 20.8639C154.157 21.6651 154.641 22.3708 154.984 22.9812H155.327V8.46582H161.03V47.5295H155.461V42.9708H154.984C154.641 43.5938 154.145 44.3059 153.496 45.1071C152.86 45.9082 151.983 46.6075 150.864 47.2052C149.745 47.8029 148.295 48.1017 146.515 48.1017ZM147.774 43.2378C149.414 43.2378 150.8 42.8055 151.932 41.9408C153.077 41.0634 153.941 39.849 154.526 38.2976C155.124 36.7463 155.423 34.9406 155.423 32.8806C155.423 30.846 155.13 29.0658 154.545 27.5399C153.96 26.0139 153.102 24.825 151.97 23.973C150.839 23.121 149.44 22.6951 147.774 22.6951C146.057 22.6951 144.627 23.1401 143.482 24.0302C142.338 24.9204 141.473 26.1347 140.888 27.6734C140.316 29.212 140.03 30.9478 140.03 32.8806C140.03 34.8389 140.322 36.6 140.907 38.1641C141.492 39.7282 142.357 40.968 143.501 41.8835C144.659 42.7864 146.083 43.2378 147.774 43.2378Z" fill="currentColor"/>
+        <path d="M115.524 48.1201C112.778 48.1201 110.381 47.4907 108.334 46.2318C106.286 44.9729 104.697 43.2117 103.565 40.9483C102.433 38.6848 101.867 36.0399 101.867 33.0135C101.867 29.9743 102.433 27.3167 103.565 25.0405C104.697 22.7644 106.286 20.9968 108.334 19.7379C110.381 18.4791 112.778 17.8496 115.524 17.8496C118.271 17.8496 120.668 18.4791 122.715 19.7379C124.763 20.9968 126.352 22.7644 127.484 25.0405C128.616 27.3167 129.181 29.9743 129.181 33.0135C129.181 36.0399 128.616 38.6848 127.484 40.9483C126.352 43.2117 124.763 44.9729 122.715 46.2318C120.668 47.4907 118.271 48.1201 115.524 48.1201ZM115.544 43.3325C117.324 43.3325 118.799 42.862 119.969 41.921C121.139 40.9801 122.003 39.7275 122.563 38.1635C123.135 36.5994 123.421 34.8764 123.421 32.9944C123.421 31.1251 123.135 29.4085 122.563 27.8444C122.003 26.2676 121.139 25.0024 119.969 24.0487C118.799 23.095 117.324 22.6181 115.544 22.6181C113.751 22.6181 112.263 23.095 111.08 24.0487C109.91 25.0024 109.039 26.2676 108.467 27.8444C107.908 29.4085 107.628 31.1251 107.628 32.9944C107.628 34.8764 107.908 36.5994 108.467 38.1635C109.039 39.7275 109.91 40.9801 111.08 41.921C112.263 42.862 113.751 43.3325 115.544 43.3325Z" fill="currentColor"/>
+        <path d="M95.0438 8.46582V47.5295H89.6268L69.7707 18.8802H69.4083V47.5295H63.5144V8.46582H68.9696L88.8447 37.1532H89.2071V8.46582H95.0438Z" fill="currentColor"/>
+      </symbol>
+
+      <!-- Logomark isolé (feuille + 2 cercles) — pour la clôture -->
+      <symbol id="nodina-mark" viewBox="0 0 52 52">
+        <path d="M32.164 7.30575C33.0624 4.05968 38.2871 -4.09837 47.6133 2.5128C56.4616 10.6553 48.7853 18.0265 45.5704 19.0941C42.3557 20.1617 38.8864 19.658 36.3248 20.8276C33.7631 21.9972 33.8421 22.1173 32.8072 22.8157C28.8659 25.4753 27.4816 28.8052 26.5086 32.3147C25.3676 36.43 26.193 38.1578 25.0324 42.3515C23.8719 46.5452 17.2128 56.9156 5.30223 48.4724C-5.99814 38.0735 3.62821 28.8696 7.91117 27.2964C12.1941 25.7233 15.3852 26.8797 19.7189 25.0825C23.185 23.645 28.0332 19.8773 29.1113 18.696C30.1895 17.5147 30.567 16.1603 31.0083 15.1646C31.4497 14.169 31.2657 10.5518 32.164 7.30575Z" fill="currentColor"/>
+        <path d="M50.3522 35.9721C50.3522 40.5298 46.6575 44.2245 42.0998 44.2245C37.5421 44.2245 33.8474 40.5298 33.8474 35.9721C33.8474 31.4144 37.5421 27.7197 42.0998 27.7197C46.6575 27.7197 50.3522 31.4144 50.3522 35.9721Z" fill="currentColor"/>
+        <path d="M23.0216 10.77C23.0216 15.3276 19.3269 19.0223 14.7692 19.0223C10.2116 19.0223 6.51685 15.3276 6.51685 10.77C6.51685 6.2123 10.2116 2.51758 14.7692 2.51758C19.3269 2.51758 23.0216 6.2123 23.0216 10.77Z" fill="currentColor"/>
+      </symbol>
+    </defs>
+  </svg>
+
+  <!-- Curseurs personnalisés -->
+  <div class="cursor-dot" id="cursor-dot" aria-hidden="true"></div>
+  <div class="cursor-ring" id="cursor-ring" aria-hidden="true"></div>
+
+  <!-- Navigation flottante -->
+  <nav class="nav" id="nav" aria-label="Navigation principale">
+    <a class="nav__logo" href="#top" aria-label="Nodina, accueil">
+      <svg class="logo-light" viewBox="0 0 238 52" aria-hidden="true"><use href="#nodina-logo"/></svg>
+      <svg class="logo-dark"  viewBox="0 0 238 52" aria-hidden="true"><use href="#nodina-logo"/></svg>
+    </a>
+    <ul class="nav__links">
+      <li><a href="#manifeste">Manifeste</a></li>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#approche">Approche</a></li>
+      <li><a href="#expertise">Expertise</a></li>
+      <li><a href="#contact" class="nav__cta">Contact</a></li>
+    </ul>
+  </nav>
+
+  <section class="hero" id="top" aria-label="Nodina">
+
+    <!-- Portrait : désactivé (fichier absent, et la sphère est centrée) -->
+
+    <!-- Sphère de nœuds — canvas peuplé en JS -->
+    <div class="hero__sphere" aria-hidden="true">
+      <canvas id="node-sphere" width="1200" height="1200"></canvas>
+    </div>
+
+    <!-- Contenu central -->
+    <div class="hero__content">
+      <div class="wordmark">
+        <span class="wordmark__sweep" aria-hidden="true"></span>
+        <!-- Logo officiel Nodina, version blanche (via currentColor) -->
+        <svg class="wordmark__logo" viewBox="0 0 238 52" role="img" aria-label="Nodina"><use href="#nodina-logo"/></svg>
+      </div>
+
+      <p class="hero__baseline">
+        Conseil en intelligence artificielle pour dirigeants.
+        <span class="hero__sub">
+          CAC 40 <span class="dot" aria-hidden="true"></span> ETI <span class="dot" aria-hidden="true"></span> COMEX
+        </span>
+      </p>
+    </div>
+
+    <div class="hero__scroll" aria-hidden="true"></div>
+  </section>
+
+  <!-- Bande défilante -->
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee__track">
+      <span class="marquee__item">Stratégie IA</span>
+      <span class="marquee__item">COMEX &amp; Direction Générale</span>
+      <span class="marquee__item">Rigueur scientifique</span>
+      <span class="marquee__item">Indépendance technologique</span>
+      <span class="marquee__item">CAC 40</span>
+      <span class="marquee__item">ETI</span>
+      <span class="marquee__item">Fondations doctorales</span>
+      <span class="marquee__item">Europe &amp; États-Unis</span>
+      <span class="marquee__item">Due diligence IA</span>
+      <span class="marquee__item">Transfert de compétences</span>
+      <span class="marquee__item">Stratégie IA</span>
+      <span class="marquee__item">COMEX &amp; Direction Générale</span>
+      <span class="marquee__item">Rigueur scientifique</span>
+      <span class="marquee__item">Indépendance technologique</span>
+      <span class="marquee__item">CAC 40</span>
+      <span class="marquee__item">ETI</span>
+      <span class="marquee__item">Fondations doctorales</span>
+      <span class="marquee__item">Europe &amp; États-Unis</span>
+      <span class="marquee__item">Due diligence IA</span>
+      <span class="marquee__item">Transfert de compétences</span>
+    </div>
+  </div>
+
+  <main>
+
+    <!-- ============================================================
+         MANIFESTE — chiffre d'ambition + ancrages
+         ============================================================ -->
+    <section id="manifeste" class="manifeste reveal" aria-labelledby="manifeste-title">
+      <div class="wrap">
+        <header style="margin-bottom: clamp(56px, 7vw, 88px);">
+          <span class="eyebrow">Manifeste</span>
+          <h2 id="manifeste-title" class="title" style="max-width: 22ch;">
+            De l'ambition stratégique <em>à la trajectoire exécutable</em>.
+          </h2>
+        </header>
+        <p class="manifeste__lede" style="max-width:56ch;">
+          Nodina accompagne les dirigeants et comités exécutifs dans la conception
+          et le pilotage de leur trajectoire en intelligence artificielle —
+          <em>rigueur scientifique, alignement stratégique, indépendance technologique</em>.
+        </p>
+
+        <div class="manifeste__anchors">
+          <div class="anchor">
+            <div class="anchor__num">I.</div>
+            <div class="anchor__text">Parler au COMEX</div>
+          </div>
+          <div class="anchor">
+            <div class="anchor__num">II.</div>
+            <div class="anchor__text">Livrer en production</div>
+          </div>
+          <div class="anchor">
+            <div class="anchor__num">III.</div>
+            <div class="anchor__text">Mesurer le ROI</div>
+          </div>
+          <div class="anchor">
+            <div class="anchor__num">IV.</div>
+            <div class="anchor__text">Transférer la maîtrise</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         SERVICES — conseil en IA pour dirigeants & COMEX
+         ============================================================ -->
+    <section id="services" class="services-section reveal" aria-labelledby="services-title">
+      <div class="wrap" style="margin-bottom: clamp(56px, 7vw, 88px);">
+        <span class="eyebrow">Conseil</span>
+        <h2 id="services-title" class="title" style="max-width: 22ch;">
+          Conseil en IA pour <em>dirigeants</em> et comités exécutifs.
+        </h2>
+      </div>
+      <div class="wrap">
+        <div class="services-grid stagger">
+          <article class="service">
+            <span class="service__num">01</span>
+            <h3 class="service__title">Diagnostic <em>stratégique</em></h3>
+            <p class="service__desc">État des lieux objectif, identification des cas d'usage à fort potentiel, recommandation claire sur la suite à donner.</p>
+          </article>
+          <article class="service">
+            <span class="service__num">02</span>
+            <h3 class="service__title">Direction de <em>programmes</em></h3>
+            <p class="service__desc">Gouvernance, delivery et arbitrages exécutifs. Pilotage ou co-pilotage des programmes IA, sans dépendance à un intégrateur.</p>
+          </article>
+          <article class="service">
+            <span class="service__num">03</span>
+            <h3 class="service__title">Audit &amp; <em>due diligence</em></h3>
+            <p class="service__desc">Évaluation critique des solutions d'IA — qualité scientifique, robustesse, alignement métier — en amont de toute décision d'investissement.</p>
+          </article>
+          <article class="service">
+            <span class="service__num">04</span>
+            <h3 class="service__title">Formation <em>COMEX</em></h3>
+            <p class="service__desc">Montée en compétences des dirigeants et des équipes techniques. Transfert de maîtrise pour une autonomie durable.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         STATS — deux signatures (Ph.D. · Europe & US)
+         ============================================================ -->
+    <section class="stats reveal" aria-label="Signature" style="--stats-cols: 2;">
+      <div class="wrap">
+        <div class="stats__grid" style="grid-template-columns: repeat(2, 1fr);">
+          <div class="stat">
+            <div class="stat__value"><em>Ph.D.</em> IA</div>
+            <div class="stat__label">Fondations scientifiques</div>
+            <div class="stat__desc">Recherche en intelligence artificielle au fondement de l'expertise.</div>
+          </div>
+          <div class="stat">
+            <div class="stat__value"><em>Europe</em> &amp; US</div>
+            <div class="stat__label">Parcours international</div>
+            <div class="stat__desc">Expérience des écosystèmes européens et nord-américains, mobilisée au service des trajectoires du CAC 40 et des ETI.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         APPROCHE — quatre principes
+         ============================================================ -->
+    <section id="approche" class="approach reveal" aria-labelledby="approche-title">
+      <div class="wrap section-grid">
+        <header class="section-grid__header">
+          <span class="eyebrow">Approche</span>
+          <h2 id="approche-title" class="title">Quatre principes <em>non&#8209;négociables</em>.</h2>
+        </header>
+
+        <ol class="principles stagger">
+          <li class="principle">
+            <span class="principle__num">I</span>
+            <div class="principle__body">
+              <h3>Rigueur scientifique</h3>
+              <p>Fondations doctorales en intelligence artificielle. Approche adossée à l'état de l'art, distanciée des effets d'annonce et des modes passagères.</p>
+            </div>
+          </li>
+          <li class="principle">
+            <span class="principle__num">II</span>
+            <div class="principle__body">
+              <h3>Alignement exécutif</h3>
+              <p>Chaque intervention est calibrée pour le niveau COMEX&nbsp;: clarté des arbitrages, pédagogie technique maîtrisée, langage d'affaires.</p>
+            </div>
+          </li>
+          <li class="principle">
+            <span class="principle__num">III</span>
+            <div class="principle__body">
+              <h3>Indépendance technologique</h3>
+              <p>Aucune relation capitalistique avec un éditeur. Les recommandations servent l'intérêt du client, jamais celui d'un fournisseur.</p>
+            </div>
+          </li>
+          <li class="principle">
+            <span class="principle__num">IV</span>
+            <div class="principle__body">
+              <h3>Vision long terme</h3>
+              <p>Nodina vise l'autonomie durable de ses clients. Le transfert de compétences est inscrit dans chaque mission, dès sa conception.</p>
+            </div>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         EXPERTISE
+         ============================================================ -->
+    <section id="expertise" class="expertise reveal" aria-labelledby="expertise-title">
+      <div class="wrap section-grid">
+        <header class="section-grid__header">
+          <span class="eyebrow">Expertise</span>
+          <h2 id="expertise-title" class="title">Une exigence <em>rare</em> dans le conseil.</h2>
+        </header>
+        <div>
+          <p class="lede">
+            Nodina s'appuie sur des fondations doctorales en intelligence artificielle
+            et sur un parcours international Europe — États-Unis. Le cabinet
+            mobilise une rigueur scientifique au service de décisions exécutives
+            éclairées, et d'une transformation qui tient dans la durée.
+          </p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============================================================
+       CONTACT — CTA en navy
+       ============================================================ -->
+  <section id="contact" class="contact reveal" aria-labelledby="contact-title">
+    <div class="wrap">
+      <span class="eyebrow">Contact</span>
+      <h2 id="contact-title" class="contact__title">
+        Engager un <em>échange confidentiel</em>.
+      </h2>
+      <a class="contact__email" href="/cdn-cgi/l/email-protection#6605090812070512260809020f08074805090b">
+        <span class="__cf_email__" data-cfemail="e5868a8b91848691a58b8a818c8b84cb868a88">[email&#160;protected]</span>
+        <span class="arrow" aria-hidden="true">→</span>
+      </a>
+      <div class="contact__details">
+        <div class="contact__detail">
+          <div class="contact__detail-label">Discrétion</div>
+          <div class="contact__detail-value">Chaque échange est traité<br>sous accord de confidentialité.</div>
+        </div>
+        <div class="contact__detail">
+          <div class="contact__detail-label">Réponse</div>
+          <div class="contact__detail-value">Sous 48 heures ouvrées.</div>
+        </div>
+        <div class="contact__detail">
+          <div class="contact__detail-label">Clientèle</div>
+          <div class="contact__detail-value">CAC 40 &amp; ETI<br>Europe &amp; International.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       CLÔTURE
+       Reprise discrète du logomark Nodina et d'une signature courte.
+       ============================================================ -->
+  <section class="closing reveal" aria-label="Signature">
+    <div class="wrap">
+      <svg class="closing__logomark" viewBox="0 0 52 52" role="img" aria-label="Nodina"><use href="#nodina-mark"/></svg>
+      <p class="closing__signature">
+        De l'ambition à la trajectoire.
+      </p>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       FOOTER — mentions légales minimales
+       ============================================================ -->
+  <footer>
+    <div class="wrap">
+      Nodina SASU
+      <span class="sep" aria-hidden="true"></span>
+      RCS Grasse 103 513 834
+      <span class="sep" aria-hidden="true"></span>
+      nodina.com
+    </div>
+  </footer>
+
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+    /* ============================================================
+       SPHÈRE DE NŒUDS — effet "wow" du hero
+       ------------------------------------------------------------
+       ~90 points distribués uniformément sur une sphère (algorithme
+       Fibonacci lattice) puis reliés par des arêtes entre voisins
+       proches. Rotation lente autour de l'axe Y + léger tangage.
+       Projection perspective simple. Au chargement, les points
+       convergent vers leur position cible depuis une position
+       radiale éloignée — c'est la "révélation" du hero.
+       ============================================================ */
+    (function () {
+      'use strict';
+      var canvas = document.getElementById('node-sphere');
+      if (!canvas) return;
+      var ctx = canvas.getContext('2d');
+
+      var prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      // DPR handling
+      function resize() {
+        var rect = canvas.getBoundingClientRect();
+        var dpr = Math.min(window.devicePixelRatio || 1, 2);
+        canvas.width = Math.max(1, Math.floor(rect.width * dpr));
+        canvas.height = Math.max(1, Math.floor(rect.height * dpr));
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      }
+      resize();
+      window.addEventListener('resize', resize);
+
+      // --- Fibonacci lattice sur une sphère unité ---
+      var N = 90;
+      var R = 1;
+      var nodes = [];
+      var phi = Math.PI * (Math.sqrt(5) - 1); // golden angle
+      for (var i = 0; i < N; i++) {
+        var y = 1 - (i / (N - 1)) * 2;        // y in [-1, 1]
+        var r = Math.sqrt(1 - y * y);
+        var theta = phi * i;
+        var x = Math.cos(theta) * r;
+        var z = Math.sin(theta) * r;
+        nodes.push({
+          ox: x * R, oy: y * R, oz: z * R, // position sphère
+          // position de départ : éloignée (effet "implode")
+          sx: x * R * 2.6 + (Math.random() - 0.5) * 0.4,
+          sy: y * R * 2.6 + (Math.random() - 0.5) * 0.4,
+          sz: z * R * 2.6 + (Math.random() - 0.5) * 0.4,
+          // Légère pulsation individuelle
+          pulsePhase: Math.random() * Math.PI * 2,
+          pulseSpeed: 0.6 + Math.random() * 0.8
+        });
+      }
+
+      // --- Précalcul des arêtes : chaque nœud relié à ses k voisins les plus proches ---
+      var edges = [];
+      var K = 3;
+      for (var a = 0; a < nodes.length; a++) {
+        var dists = [];
+        for (var b = 0; b < nodes.length; b++) {
+          if (a === b) continue;
+          var dx = nodes[a].ox - nodes[b].ox;
+          var dy = nodes[a].oy - nodes[b].oy;
+          var dz = nodes[a].oz - nodes[b].oz;
+          dists.push({ i: b, d: dx*dx + dy*dy + dz*dz });
+        }
+        dists.sort(function (p, q) { return p.d - q.d; });
+        for (var k = 0; k < K; k++) {
+          var j = dists[k].i;
+          if (j > a) edges.push([a, j]); // éviter doublons
+        }
+      }
+
+      // Rotation state
+      var ry = 0;          // yaw
+      var rx = -0.25;      // pitch (léger plongeant)
+      var targetRx = rx;
+      var targetRy = ry;
+      var mouseInfluence = { x: 0, y: 0 }; // -1..1
+
+      var cssWidth = function () { return canvas.getBoundingClientRect().width; };
+
+      var heroEl = document.querySelector('.hero');
+      if (heroEl) {
+        heroEl.addEventListener('mousemove', function (e) {
+          var rect = heroEl.getBoundingClientRect();
+          mouseInfluence.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+          mouseInfluence.y = ((e.clientY - rect.top) / rect.height) * 2 - 1;
+        });
+        heroEl.addEventListener('mouseleave', function () {
+          mouseInfluence.x = 0; mouseInfluence.y = 0;
+        });
+      }
+
+      var t0 = performance.now();
+      var ENTRY_MS = 1800;
+      var ENTRY_DELAY = 300;
+
+      // Easing
+      function easeOutExpo(t) { return t === 1 ? 1 : 1 - Math.pow(2, -10 * t); }
+
+      function project(x, y, z, w, h) {
+        // Perspective projection
+        var fov = 2.2;
+        var persp = fov / (fov + z);
+        if (persp < 0.05) persp = 0.05;
+        var scale = Math.min(w, h) * 0.44;
+        return {
+          px: w / 2 + x * scale * persp,
+          py: h / 2 + y * scale * persp,
+          depth: z,        // -R..R (plus grand = plus loin)
+          persp: persp
+        };
+      }
+
+      function rotate(x, y, z, rx, ry) {
+        // yaw (autour de Y)
+        var cy = Math.cos(ry), sy = Math.sin(ry);
+        var x1 = x * cy + z * sy;
+        var z1 = -x * sy + z * cy;
+        // pitch (autour de X)
+        var cx = Math.cos(rx), sx = Math.sin(rx);
+        var y1 = y * cx - z1 * sx;
+        var z2 = y * sx + z1 * cx;
+        return { x: x1, y: y1, z: z2 };
+      }
+
+      function frame(now) {
+        var dt = (now - (frame.last || now)) / 1000;
+        frame.last = now;
+
+        var elapsed = now - t0;
+        var entryT = Math.max(0, Math.min(1, (elapsed - ENTRY_DELAY) / ENTRY_MS));
+        var eT = easeOutExpo(entryT);
+
+        // Rotation lente ; l'entrée accélère légèrement
+        var spin = prefersReducedMotion ? 0 : 0.12;
+        ry += spin * dt + (1 - eT) * 0.8 * dt;
+
+        // Interpolation vers la cible (mouvement souris)
+        targetRy = mouseInfluence.x * 0.28;
+        targetRx = -0.25 + mouseInfluence.y * 0.18;
+        rx += (targetRx - rx) * 0.04;
+        // (ry continue de tourner — on n'interpole que vers une offset, mais on laisse spinner)
+
+        var rect = canvas.getBoundingClientRect();
+        var w = rect.width, h = rect.height;
+
+        ctx.clearRect(0, 0, w, h);
+
+        // Aura centrale (subtile)
+        var grad = ctx.createRadialGradient(w/2, h/2, 0, w/2, h/2, Math.min(w, h) * 0.5);
+        grad.addColorStop(0, 'rgba(184,146,74,0.10)');
+        grad.addColorStop(0.6, 'rgba(184,146,74,0.02)');
+        grad.addColorStop(1, 'rgba(184,146,74,0)');
+        ctx.fillStyle = grad;
+        ctx.fillRect(0, 0, w, h);
+
+        // Calcule positions projetées pour tous les nœuds
+        var projected = new Array(nodes.length);
+        for (var i = 0; i < nodes.length; i++) {
+          var n = nodes[i];
+          // blend start -> ox/oy/oz par eT
+          var x = n.sx + (n.ox - n.sx) * eT;
+          var y = n.sy + (n.oy - n.sy) * eT;
+          var z = n.sz + (n.oz - n.sz) * eT;
+          var rot = rotate(x, y, z, rx, ry);
+          var p = project(rot.x, rot.y, rot.z, w, h);
+          projected[i] = p;
+        }
+
+        // Dessine les arêtes (trié par profondeur moyenne pour un rendu propre)
+        var edgeList = edges.map(function (e) {
+          var a = projected[e[0]], b = projected[e[1]];
+          return { a: a, b: b, depth: (a.depth + b.depth) / 2 };
+        });
+        edgeList.sort(function (p, q) { return q.depth - p.depth; });
+
+        for (var ei = 0; ei < edgeList.length; ei++) {
+          var e = edgeList[ei];
+          // opacité selon profondeur : plus proche = plus visible
+          var dNorm = (1 - (e.depth + 1) / 2); // 0..1 (0 = loin, 1 = proche)
+          var alpha = 0.08 + dNorm * 0.42;
+          // teinte : or pour les plus proches, blanc froid pour les plus loin
+          var r = 184, g = 146, bl = 74;
+          // mélange vers blanc pour le lointain
+          var mix = 1 - dNorm * 0.85;
+          r = Math.round(r + (220 - r) * mix * 0.5);
+          g = Math.round(g + (225 - g) * mix * 0.5);
+          bl = Math.round(bl + (230 - bl) * mix * 0.5);
+          ctx.strokeStyle = 'rgba(' + r + ',' + g + ',' + bl + ',' + (alpha * eT) + ')';
+          ctx.lineWidth = 0.7 + dNorm * 0.7;
+          ctx.beginPath();
+          ctx.moveTo(e.a.px, e.a.py);
+          ctx.lineTo(e.b.px, e.b.py);
+          ctx.stroke();
+        }
+
+        // Dessine les nœuds (les plus proches par-dessus)
+        var order = nodes.map(function (_, idx) { return idx; });
+        order.sort(function (p, q) { return projected[p].depth - projected[q].depth; });
+        // loin -> proche
+        for (var oi = order.length - 1; oi >= 0; oi--) {
+          var idx = order[oi];
+          var pp = projected[idx];
+          var dN = (1 - (pp.depth + 1) / 2); // proche = 1
+          var pulse = 0.85 + 0.15 * Math.sin((now / 1000) * nodes[idx].pulseSpeed + nodes[idx].pulsePhase);
+          var baseR = 1.6 + dN * 3.8;
+          var rad = Math.max(0.3, baseR * pulse * pp.persp);
+
+          // Halo pour les plus proches
+          if (dN > 0.65) {
+            var glowR = rad * 4;
+            var g2 = ctx.createRadialGradient(pp.px, pp.py, 0, pp.px, pp.py, glowR);
+            g2.addColorStop(0, 'rgba(184,146,74,' + (0.35 * eT * dN) + ')');
+            g2.addColorStop(1, 'rgba(184,146,74,0)');
+            ctx.fillStyle = g2;
+            ctx.beginPath();
+            ctx.arc(pp.px, pp.py, glowR, 0, Math.PI * 2);
+            ctx.fill();
+          }
+
+          // Point
+          var pointColor;
+          if (dN > 0.7) pointColor = 'rgba(226,196,130,' + eT + ')';      // or clair
+          else if (dN > 0.4) pointColor = 'rgba(200,180,150,' + (0.85 * eT) + ')';
+          else pointColor = 'rgba(200,210,225,' + (0.55 * eT) + ')';     // blanc froid
+          ctx.fillStyle = pointColor;
+          ctx.beginPath();
+          ctx.arc(pp.px, pp.py, rad, 0, Math.PI * 2);
+          ctx.fill();
+        }
+
+        if (!prefersReducedMotion) requestAnimationFrame(frame);
+      }
+
+      if (prefersReducedMotion) {
+        // Rendu unique à l'état final
+        t0 = performance.now() - (ENTRY_MS + ENTRY_DELAY + 100);
+        frame(performance.now());
+      } else {
+        requestAnimationFrame(frame);
+      }
+    })();
+
+    /* ============================================================
+       JAVASCRIPT — scroll fluide + IntersectionObserver
+       ============================================================ */
+    (function () {
+      'use strict';
+
+      var prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      /* ----------------------------------------------------------
+         Scroll fluide sur les ancres (#xxx) — fallback JS
+         ---------------------------------------------------------- */
+      document.querySelectorAll('a[href^="#"]').forEach(function (link) {
+        link.addEventListener('click', function (e) {
+          var href = link.getAttribute('href');
+          if (!href || href === '#') return;
+          var target = document.querySelector(href);
+          if (!target) return;
+          e.preventDefault();
+          target.scrollIntoView({
+            behavior: prefersReducedMotion ? 'auto' : 'smooth',
+            block: 'start'
+          });
+          // Focus pour l'accessibilité clavier
+          target.setAttribute('tabindex', '-1');
+          target.focus({ preventScroll: true });
+        });
+      });
+
+      /* ----------------------------------------------------------
+         IntersectionObserver — révélation des sections au scroll
+         ---------------------------------------------------------- */
+      var revealables = document.querySelectorAll('.reveal');
+
+      if (prefersReducedMotion || !('IntersectionObserver' in window)) {
+        // Fallback : tout visible immédiatement
+        revealables.forEach(function (el) { el.classList.add('is-visible'); });
+        return;
+      }
+
+      var observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, {
+        threshold: 0.12,
+        rootMargin: '0px 0px -40px 0px'
+      });
+
+      revealables.forEach(function (el) { observer.observe(el); });
+    })();
+
+    /* ============================================================
+       CURSEUR PERSONNALISÉ — point or + anneau
+       - Suivi souris (raf, interpolé)
+       - Grossit au survol d'éléments interactifs
+       - Classe cursor-on-dark appliquée dans hero / contact
+       ============================================================ */
+    (function () {
+      'use strict';
+      var dot = document.getElementById('cursor-dot');
+      var ring = document.getElementById('cursor-ring');
+      if (!dot || !ring) return;
+
+      var mq = window.matchMedia('(hover: hover) and (pointer: fine)');
+      var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (!mq.matches) { dot.style.display = 'none'; ring.style.display = 'none'; return; }
+
+      var mx = window.innerWidth / 2, my = window.innerHeight / 2;
+      var dx = mx, dy = my;   // dot position (suit directement)
+      var rx = mx, ry = my;   // ring position (easing)
+      var visible = false;
+
+      window.addEventListener('mousemove', function (e) {
+        mx = e.clientX; my = e.clientY;
+        if (!visible) {
+          visible = true;
+          dot.style.opacity = '1';
+          ring.style.opacity = '1';
+        }
+      });
+
+      document.addEventListener('mouseleave', function () {
+        visible = false;
+        dot.style.opacity = '0';
+        ring.style.opacity = '0';
+      });
+
+      function tick() {
+        // Dot : suit presque en direct
+        dx += (mx - dx) * 0.9;
+        dy += (my - dy) * 0.9;
+        // Ring : suit avec easing (traînée élégante)
+        rx += (mx - rx) * 0.18;
+        ry += (my - ry) * 0.18;
+        dot.style.transform = 'translate3d(' + dx + 'px,' + dy + 'px, 0)';
+        ring.style.transform = 'translate3d(' + rx + 'px,' + ry + 'px, 0)';
+        requestAnimationFrame(tick);
+      }
+      if (!reduced) requestAnimationFrame(tick);
+
+      // État hover : grossit sur liens & boutons
+      document.querySelectorAll('a, button, input, select, textarea, [role="button"]').forEach(function (el) {
+        el.addEventListener('mouseenter', function () { document.body.classList.add('cursor-hover'); });
+        el.addEventListener('mouseleave', function () { document.body.classList.remove('cursor-hover'); });
+      });
+
+      // cursor-on-dark : active quand on passe au-dessus du hero ou du contact
+      var darkZones = document.querySelectorAll('.hero, .contact');
+      if ('IntersectionObserver' in window) {
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting && entry.intersectionRatio > 0.3) {
+              document.body.classList.add('cursor-on-dark');
+            } else {
+              // Vérifie si une autre zone sombre est encore visible
+              var anyDark = false;
+              darkZones.forEach(function (z) {
+                var r = z.getBoundingClientRect();
+                if (r.top < window.innerHeight * 0.5 && r.bottom > window.innerHeight * 0.5) {
+                  anyDark = true;
+                }
+              });
+              if (!anyDark) document.body.classList.remove('cursor-on-dark');
+            }
+          });
+        }, { threshold: [0.3, 0.7] });
+        darkZones.forEach(function (z) { io.observe(z); });
+      }
+    })();
+  </script>
+</body>
+</html>
